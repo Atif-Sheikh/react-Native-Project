@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { logOutNow } from '../store/actions';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Spinner } from 'native-base';
 import Post from './post';
+import Users from './users';
 
 class NGOHome extends Component {
     constructor(){
@@ -33,7 +34,7 @@ class NGOHome extends Component {
                     this.state.post ? <Post /> : null
                 }
                 {
-                    this.state.ngos ? <Text>NGOs</Text> : null
+                    this.state.ngos ? <Users /> : null
                 }
                 {
                     this.state.about ? <Text>About</Text> : null                    

@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux';
 
 export const SignupNow = (data) => {
     return dispatch => { 
-    let { email, password, userName, accountType } = data;
+    let { email, password, userName, accountType, number } = data;
     console.log(email, password)
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((result) => {
@@ -14,9 +14,10 @@ export const SignupNow = (data) => {
                 uid: result.uid,
                 name: userName,
                 accountType,
+                number,
             };
             firebase.database().ref(`/users/${result.uid}`).set(user1).then((user) => {
-                firebase.auth().currentUser.updateProfile({displayName: userName})
+                firebase.auth().currentUser.updateProfile({displayName: userName, phoneNumber: number})
                 dispatch({ type: ActionTypes.SIGNUP, payload: user1 })
                 Actions.home();
             })
@@ -39,6 +40,21 @@ export const getNGOs = () => {
             }
             // console.log(ngos);
             dispatch({ type: ActionTypes.GETNOGOS, payload: ngos});
+        })
+    };
+};
+export const getUsers = () => {
+    return dispatch => {
+        firebase.database().ref(`/users`).on('value', snap => {
+            let data = snap.val();
+            let users = [];
+            for(let key in data){
+                if(data[key]['accountType'] === 'user'){
+                    users.push(data[key]);
+                }
+            }
+            // console.log(ngos);
+            dispatch({ type: ActionTypes.GETUSERS, payload: users});
         })
     };
 };
@@ -74,18 +90,34 @@ export const likePost = (key) => {
         firebase.database().ref(`/posts/${key}/`).update({likes: totalLikes+1});
     };
 };
+export const dislikePost = (key) => {
+    return dispatch => {
+        console.log('like', key);
+        let totalLikes;
+        firebase.database().ref(`/posts/${key}/`).on('value', snap => {
+            let data = snap.val();
+            totalLikes = data.likes;
+            console.log(data, data.likes);
+        })
+        firebase.database().ref(`/posts/${key}/`).update({likes: totalLikes-1});
+    };
+};
 export const Requirement = (data) => {
     return dispatch => {
         let { requirement, rupees } = data;
         firebase.auth().onAuthStateChanged((user) => {
             if(user){
-                let UID = user.uid;
-                let userEmail = user.email;
-                let name = user.displayName;
-                data.UID = UID;
-                data.email = userEmail;
+                console.log(user)
+                let name;
+                firebase.database().ref(`/users/${user.uid}`).on('value', snap => {
+                    let values = snap.val();
+                    name = values['name'];
+                });
+                data.UID = user.uid;
+                data.email = user.email;
                 data.name = name;
                 data.likes = 0;
+                // data.number = user.phoneNumber;
                 firebase.database().ref(`/posts/`).push(data);
             }
         });

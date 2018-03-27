@@ -23,6 +23,7 @@ class Signup extends Component {
             email: '',
             password: '',
             loading: false,
+            number: '',
         };
     };
     static navigationOptions = {
@@ -37,13 +38,14 @@ class Signup extends Component {
         };
     };
     signup = () => {
-        const { email, password, userName } = this.state;
-        if(email.trim(), password.trim(), userName.trim()){
+        const { email, password, userName, number } = this.state;
+        if(email.trim() && password.trim() && userName.trim() && number.trim()){
             const obj = {
                 userName,
                 email,
                 password,
                 accountType: 'user',
+                number,
             };
             this.props.SignupNow(obj)
             this.setState({loading: true});
@@ -70,6 +72,9 @@ class Signup extends Component {
                 </Item>
                 <Item style={styles.item} regular>
                     <Input placeholder='************' style={styles.input} secureTextEntry={true} onChangeText={password => this.setState({ password: password.trim() })} />
+                </Item>
+                <Item style={styles.item} regular>
+                    <Input placeholder='+923********' keyboardType='numeric' onChangeText={(text)=> this.setState({number: text.trim()})} />
                 </Item>
                 <Text style={{fontSize: 20, color: 'red'}}>{this.props.error}</Text>                
                 <View style={styles.btn}>

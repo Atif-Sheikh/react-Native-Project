@@ -26,7 +26,7 @@ class Home extends Component {
     logOut = () => {
         this.props.logOutNow();
     };
-    componentWillMount(){
+    componentDidMount(){
         this.props.GetData();
     };
     render() {
@@ -39,9 +39,9 @@ class Home extends Component {
                 {
                     this.state.posts ? <Content>
                         {
-                            this.props.allPosts.map((post, index) => {
+                            this.props.allPosts ? this.props.allPosts.map((post, index) => {
                                 return <Posts postsKey={this.props.postKeys[index]} post={post} key={index} />
-                            })
+                            }) : ''
                         }
                     </Content> : null
                 }
@@ -56,13 +56,13 @@ class Home extends Component {
                 }
             </Content>
             <Footer>
-              <FooterTab style={styles.footer}>
+              <FooterTab style={{backgroundColor: 'white'}}>
                 <Button active={this.state.posts} onPress={()=> this.setState({posts: true, ngos: false, about: false, contact: false, title: 'Home'})} vertical>
                   <Icon name="home" />
                   <Text>Home</Text>
                 </Button>
                 <Button active={this.state.ngos} onPress={()=> this.setState({posts: false, ngos: true, about: false, contact: false, title: 'NGOs'})} vertical>
-                  <Icon name="contacts" />
+                  <Icon name="people" />
                   <Text>NGOs</Text>
                 </Button>
                 <Button active={this.state.about} onPress={()=> this.setState({posts: false, ngos: false, about: true, contact: false, title: 'About'})} vertical>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     footer: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
     },
 });
 

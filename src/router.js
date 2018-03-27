@@ -21,12 +21,12 @@ export default class Routers extends Component{
               <Scene key="home"
                 component={Home}
                 title="Home"
-                initial                 
-              />
+                />
               <Scene key="NGOHome"
                 component={NGOHome}
-                title=''
-              />
+                title='NGOHOME'
+                initial                 
+                />
               <Scene
                 key="signup"
                 component={Signup}

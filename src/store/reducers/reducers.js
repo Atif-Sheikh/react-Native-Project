@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     allPosts: [],
     keys: [],
     ngos: [],
+    users: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -26,6 +27,11 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 ngos: action.payload,
+            });
+        case ActionTypes.GETUSERS:
+            return ({
+                ...state,
+                users: action.payload,
             });
         case ActionTypes.GETDATA:
             return ({

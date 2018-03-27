@@ -20,7 +20,12 @@ class Post extends Component {
         e.preventDefault();
         const { requirement, rupees } = this.state;
         if(requirement && rupees){
-            let data = { requirement, rupees };
+            let now = new Date();
+            let abc = ['Januray', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            let month = abc[now.getMonth()];
+            let year = now.getFullYear();
+            let date = now.getDate();
+            let data = { requirement, rupees, month, year, date };
             this.props.Requirement(data);
             this.setState({post: true});
         }else{

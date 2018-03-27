@@ -9,6 +9,7 @@ const ActionTypes = {
     GETDATA: 'GETDATA',
     GETKEYS: 'GETKEYS',
     GETNOGOS: 'GETNOGOS',
+    GETUSERS: 'GETUSERS',    
 }
 
 export default ActionTypes;
