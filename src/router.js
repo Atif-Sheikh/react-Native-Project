@@ -6,6 +6,7 @@ import Login from './Components/login';
 import Home from './Components/home';
 import Posts from './Components/posts';
 import NGOHome from './Components/ngoHome';
+import Messages from './Components/comments';
 import CustomHeader from './Components/header';
 
 export default class Routers extends Component{
@@ -21,12 +22,16 @@ export default class Routers extends Component{
               <Scene key="home"
                 component={Home}
                 title="Home"
+                initial                  
                 />
+              <Scene key="message"
+                component={Messages}
+                title="Messages"
+              />
               <Scene key="NGOHome"
                 component={NGOHome}
                 title='NGOHOME'
-                initial                 
-                />
+              />
               <Scene
                 key="signup"
                 component={Signup}

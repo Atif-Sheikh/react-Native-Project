@@ -35,7 +35,7 @@ class Post extends Component {
     render() {
         return (
         <Container>
-            <Content>
+            <Content style={{marginTop: 50}}>
                 <Card>
                 {
                     this.state.post ? <Card>

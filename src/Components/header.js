@@ -7,11 +7,11 @@ const CustomHeader = ({ title,title2 }) => (
         <Text style={styles.Text}> {title} </Text>
         <Text style={styles.Text1}> {title2} </Text>
     </View>
-)
+);
 
 CustomHeader.propTypes = {
     title: PropTypes.string
-}
+};
 
 export default CustomHeader;
 

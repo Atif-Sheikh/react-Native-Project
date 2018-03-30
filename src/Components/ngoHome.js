@@ -49,7 +49,7 @@ class NGOHome extends Component {
                   <Icon name="home" />
                   <Text>Home</Text>
                 </Button>
-                <Button active={this.state.ngos} onPress={()=> this.setState({post: false, ngos: true, about: false, contact: false, title: 'NGOs'})} vertical>
+                <Button active={this.state.ngos} onPress={()=> this.setState({post: false, ngos: true, about: false, contact: false, title: 'Users'})} vertical>
                   <Icon name="contacts" />
                   <Text>Users</Text>
                 </Button>

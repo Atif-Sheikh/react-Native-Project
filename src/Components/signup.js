@@ -6,7 +6,7 @@ import {
     View,
     Image,
     Button,
-
+    keyboard,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux'; // New code
 import { connect } from 'react-redux';
@@ -47,7 +47,8 @@ class Signup extends Component {
                 accountType: 'user',
                 number,
             };
-            this.props.SignupNow(obj)
+            this.props.SignupNow(obj);
+            Keyboard.dismiss();        
             this.setState({loading: true});
             setTimeout(() => {
                 this.setState({loading: false});

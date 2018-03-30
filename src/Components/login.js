@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image,StyleSheet,Button } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, Keyboard } from 'react-native';
 import CustomHeader from './header';
 import { Content, Input, Item } from 'native-base';
 import { Actions } from 'react-native-router-flux'; // New code
@@ -36,9 +36,10 @@ class Login extends Component {
                 password: this.state.password.trim(),
             };
             this.props.SiginNow(user);
-            // setTimeout(() => {
-            //     this.setState({loading: false});
-            // }, 1000);
+            Keyboard.dismiss();        
+            setTimeout(() => {
+                this.setState({loading: false});
+            }, 1000);
         }else{
             alert('Please enter all fields!');
         }

@@ -9,14 +9,34 @@ const INITIAL_STATE = {
     keys: [],
     ngos: [],
     users: [],
+    currentRequiremnet: {},
+    messages: [],
+    length: 2,
+    // key: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case ActionTypes.SIGNUP:
             return ({
-                // ...state,
+                ...state,
                 user: action.payload,
+            });
+        case ActionTypes.GETMESSAGES:
+            return ({
+                ...state,
+                messages: action.payload,
+            });
+        case ActionTypes.COMMENTLENGTH:
+            return ({
+                ...state,
+                length: action.payload, 
+            });
+        case ActionTypes.CURRENTREQUIREMENT:
+            console.log(action.payload);
+            return ({
+                ...state,
+                currentRequiremnet: action.payload,
             });
         case ActionTypes.GETKEYS:
             return ({
@@ -45,7 +65,7 @@ export default (state = INITIAL_STATE, action) => {
             });
         case ActionTypes.SIGNIN:
             return ({
-                // ...state,
+                ...state,
                 user: action.payload,
             });
         case ActionTypes.ERROR:

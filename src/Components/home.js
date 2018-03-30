@@ -31,7 +31,7 @@ class Home extends Component {
     };
     render() {
         // const title = this.props.user.userName;
-        console.log(this.props.postKeys);
+        // console.log(this.props.postKeys);
         return (
             <Container>
             <CustomHeader title={this.state.title} />
@@ -57,20 +57,20 @@ class Home extends Component {
             </Content>
             <Footer>
               <FooterTab style={{backgroundColor: 'white'}}>
-                <Button active={this.state.posts} onPress={()=> this.setState({posts: true, ngos: false, about: false, contact: false, title: 'Home'})} vertical>
-                  <Icon name="home" />
+                <Button onPress={()=> this.setState({posts: true, ngos: false, about: false, contact: false, title: 'Home'})} vertical>
+                  <Icon active={this.state.posts} name="home" />
                   <Text>Home</Text>
                 </Button>
-                <Button active={this.state.ngos} onPress={()=> this.setState({posts: false, ngos: true, about: false, contact: false, title: 'NGOs'})} vertical>
-                  <Icon name="people" />
+                <Button onPress={()=> this.setState({posts: false, ngos: true, about: false, contact: false, title: 'NGOs'})} vertical>
+                  <Icon active={this.state.ngos} name="people" />
                   <Text>NGOs</Text>
                 </Button>
-                <Button active={this.state.about} onPress={()=> this.setState({posts: false, ngos: false, about: true, contact: false, title: 'About'})} vertical>
-                  <Icon name="settings" />
+                <Button onPress={()=> this.setState({posts: false, ngos: false, about: true, contact: false, title: 'About'})} vertical>
+                  <Icon active={this.state.about} name="settings" />
                   <Text>About</Text>
                 </Button>
-                <Button active={this.state.contact} onPress={this.props.logOutNow} vertical>
-                  <Icon name="ionic" />
+                <Button onPress={this.props.logOutNow} vertical>
+                  <Icon active={this.state.contact} name="ionic" />
                   <Text>Logout</Text>
                 </Button>
               </FooterTab>
@@ -98,7 +98,7 @@ function mapStateToProp(state) {
     return ({
         user: state.root.user,
         allPosts: state.root.allPosts,
-        postKeys: state.root.keys,
+        postKeys: state.root.keys, 
     });
 };
 function mapDispatchToProp(dispatch) {

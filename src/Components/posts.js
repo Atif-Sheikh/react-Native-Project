@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { connect } from 'react-redux';
-import { likePost, dislikePost } from '../store/actions';
+import { likePost, MessageKey } from '../store/actions';
+import { Actions } from 'react-native-router-flux';
 import PercentageCircle from 'react-native-percentage-circle';
+import Messages from './comments';
 
 class Posts extends Component {
   constructor(){
@@ -12,22 +14,28 @@ class Posts extends Component {
       comment: false,
     };
   };
+  toggleState = () => {
+    this.setState({comment: false});
+  };
   likePost = () => {
     const { like } = this.state;
     this.setState({like: !like});
+    let key = this.props.postsKey;    
+    this.props.likePost(key);
+  };
+  renderMessage = (requirement) => {
     let key = this.props.postsKey;
-    if(like){
-      this.props.dislikePost(key);
-    }else{
-      this.props.likePost(key);
-    }
+    let obj = {requirement, key};
+    this.props.MessageKey(obj);
+    Actions.message();
   };
   render() {
-    console.log(this.props.postsKey);
-    const { name, requirement, rupees, likes, month, year, date } = this.props.post;
+    // console.log(this.props.post);
+    const { name, requirement, rupees, likes, month, year, date, comments } = this.props.post;
     return (
       <Container style={{display: 'flex', flex: 1, height: 'auto'}}>
-        <Content>
+        {
+          <Content>
           <Card>
             <CardItem>
               <Left>
@@ -54,8 +62,8 @@ class Posts extends Component {
                 </Button>
               </Left>
               <Body>
-                <Button transparent>
-                  <Icon active={this.state.comment} name="chatbubbles" /><Text>4 Comments</Text>
+                <Button style={{width: '105%'}} onPress={() => this.renderMessage(requirement)} transparent>
+                  <Icon active={this.state.comment} name="chatbubbles" /><Text>{comments } COMMENTS</Text>
                 </Button>
               </Body>
               <Right>
@@ -66,6 +74,7 @@ class Posts extends Component {
             </CardItem>
           </Card>
         </Content>
+        }
       </Container>
     );
   };
@@ -73,6 +82,7 @@ class Posts extends Component {
 
 function mapStateToProp(state) {
   return ({
+      length: state.root.length,
     // PostKeys: state.root.postKeys, 
   });
 };
@@ -81,8 +91,8 @@ function mapDispatchToProp(dispatch) {
       likePost: (key) => {
           dispatch(likePost(key))
       },
-      dislikePost: (key) => {
-        dispatch(dislikePost(key))
+      MessageKey: (obj) => {
+        dispatch(MessageKey(obj))
       },
     };
 };
