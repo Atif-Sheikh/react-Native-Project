@@ -18,11 +18,11 @@ export default class Routers extends Component{
                 key="login"
                 component={Login}
                 title="Login"
+                initial                  
                 />
               <Scene key="home"
                 component={Home}
                 title="Home"
-                initial                  
                 />
               <Scene key="message"
                 component={Messages}

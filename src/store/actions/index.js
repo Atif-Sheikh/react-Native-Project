@@ -164,28 +164,30 @@ export const likePost = (key) => {
             let like = false;
             let likeKey;
             firebase.auth().onAuthStateChanged((user) => {
-                firebase.database().ref(`/posts/${key}/`).on('value', snap => {
-                    let data = snap.val();
-                    totalLikes = data.likes;
-                    UID = user.uid;
-                    for(let key in data){
-                        if(UID === data[key]['uid']){
-                            // console.log(data[key]['uid'])
-                            like = true;
-                            likeKey = key;
-                            break;
+                if(user){
+                    firebase.database().ref(`/posts/${key}/`).on('value', snap => {
+                        let data = snap.val();
+                        totalLikes = data.likes;
+                        UID = user.uid;
+                        for(let key in data){
+                            if(UID === data[key]['uid']){
+                                // console.log(data[key]['uid'])
+                                like = true;
+                                likeKey = key;
+                                break;
+                            }
                         }
+                    })
+                    // console.log(like);                
+                    if(like){
+                        firebase.database().ref(`/posts/${key}/`).update({likes: totalLikes-1});
+                        firebase.database().ref(`/posts/${key}/${likeKey}`).remove();                                            
+                        // console.log(like, likeKey);
+                    }else{
+                        // console.log(like);                    
+                        firebase.database().ref(`/posts/${key}/`).update({likes: totalLikes+1});
+                        firebase.database().ref(`/posts/${key}/`).push({uid: UID});                
                     }
-                })
-                // console.log(like);                
-                if(like){
-                    firebase.database().ref(`/posts/${key}/`).update({likes: totalLikes-1});
-                    firebase.database().ref(`/posts/${key}/${likeKey}`).remove();                                            
-                    // console.log(like, likeKey);
-                }else{
-                    // console.log(like);                    
-                    firebase.database().ref(`/posts/${key}/`).update({likes: totalLikes+1});
-                    firebase.database().ref(`/posts/${key}/`).push({uid: UID});                
                 }
             })
         });
