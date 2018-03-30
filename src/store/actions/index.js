@@ -3,7 +3,8 @@ import * as firebase from 'firebase';
 import { Actions } from 'react-native-router-flux'; 
 import { InteractionManager } from 'react-native';
 export const SignupNow = (data) => {
-    return dispatch => { 
+    return dispatch => {
+        dispatch({ type: ActionTypes.SIGNUPERROR, payload: '' });                     
         InteractionManager.runAfterInteractions(() => {
             let { email, password, userName, accountType, number } = data;
             console.log(email, password)
@@ -234,6 +235,7 @@ export const Requirement = (data) => {
 
 export const SiginNow = (user) => {
     return dispatch => {
+        dispatch({ type: ActionTypes.ERROR, payload: '' });
         InteractionManager.runAfterInteractions(() => {
             console.log(user);        
             firebase.auth().signInWithEmailAndPassword(user.email, user.password)
