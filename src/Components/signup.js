@@ -6,7 +6,7 @@ import {
     View,
     Image,
     Button,
-    keyboard,
+    Keyboard,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux'; // New code
 import { connect } from 'react-redux';

@@ -39,7 +39,7 @@ class Login extends Component {
             Keyboard.dismiss();        
             setTimeout(() => {
                 this.setState({loading: false});
-            }, 1000);
+            }, 2000);
         }else{
             alert('Please enter all fields!');
         }

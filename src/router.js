@@ -8,17 +8,23 @@ import Posts from './Components/posts';
 import NGOHome from './Components/ngoHome';
 import Messages from './Components/comments';
 import CustomHeader from './Components/header';
+import Splash from './Components/Splash';
 
 export default class Routers extends Component{
     render(){
         return(
             <Router>
             <Scene key="root">
+              <Scene 
+                key='splash'
+                component={Splash}
+                title='Splash'
+                initial                  
+              />
               <Scene
                 key="login"
                 component={Login}
                 title="Login"
-                initial                  
                 />
               <Scene key="home"
                 component={Home}
