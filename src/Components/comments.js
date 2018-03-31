@@ -61,7 +61,7 @@ class Message extends Component {
                         return <Content key={index.toString()}>
                         <List>
                             <ListItem avatar>
-                                <Icon style={{ fontSize: 30 }} name='person' />
+                                <Icon style={{ fontSize: 40, color: '#4A86C5' }} name='contact' name='contact' />
                             <Body style={{minHeight: 70, height: 'auto'}}>
                                 <Text>{msg.message}</Text>
                                 {/* <Text note>user.number</Text> */}

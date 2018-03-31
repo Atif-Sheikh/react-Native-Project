@@ -8,14 +8,14 @@ class Splash extends Component {
     static navigationOptions = {
         header: null,
     };
-    componentWillMount(){
-        setTimeout(() => {
-            Actions.login();
-        }, 3000);
-    }
+    // componentWillMount(){
+    //     setTimeout(() => {
+    //         Actions.login();
+    //     }, 3000);
+    // }
     render() {
         return (
-            <View>
+            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                 <Image
                     style={{width: '100%', height: '100%'}}
                     source={donate}

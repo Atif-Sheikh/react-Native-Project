@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import { Container, Header, Content, Card, CardItem,
+  Thumbnail, ActionSheet, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { connect } from 'react-redux';
 import { likePost, MessageKey } from '../store/actions';
 import { Actions } from 'react-native-router-flux';
 import PercentageCircle from 'react-native-percentage-circle';
 import Messages from './comments';
+
+var BUTTONS = ['via Product', 'via Cheque / Cash', 'via Online Payment', 'On Donate Page', "Cancel"];
+var DESTRUCTIVE_INDEX = 3;
+var CANCEL_INDEX = 4;
 
 class Posts extends Component {
   constructor(){
@@ -39,9 +44,7 @@ class Posts extends Component {
           <Card>
             <CardItem>
               <Left>
-                <Text>
-                  <Icon style={{ fontSize: 50 }} name='person' />              
-                </Text>
+                  <Icon style={{ fontSize: 50, color: '#4A86C5' }} name='contact'/>              
                 <Body>
                   <Text>{name}</Text>
                   <Text note>{month } {date}, {year}</Text>
@@ -52,7 +55,7 @@ class Posts extends Component {
               </Right>
             </CardItem>
             <CardItem cardBody>
-                <Text>{requirement}, it will be cost around PKR: {rupees}/-</Text>
+                <Text style={{margin: 5}}>{requirement}, it will be cost around PKR: {rupees}/-</Text>
             </CardItem>
             <CardItem>
               <Left>
@@ -67,7 +70,18 @@ class Posts extends Component {
                 </Button>
               </Body>
               <Right>
-                <Button transparent>
+                <Button onPress={() =>
+                  ActionSheet.show(
+                    {
+                      options: BUTTONS,
+                      cancelButtonIndex: CANCEL_INDEX,
+                      destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                      title: 'Please select option'
+                    },
+                    buttonIndex => {
+                      this.setState({ clicked: BUTTONS[buttonIndex] });
+                    }
+                  )} transparent>
                   <Text>DONATE</Text>
                 </Button>                
               </Right>
