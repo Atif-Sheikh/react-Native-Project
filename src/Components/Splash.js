@@ -11,7 +11,7 @@ class Splash extends Component {
     componentWillMount(){
         setTimeout(() => {
             Actions.login();
-        }, 2000);
+        }, 3000);
     }
     render() {
         return (

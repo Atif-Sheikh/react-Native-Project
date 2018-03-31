@@ -53,7 +53,8 @@ class Message extends Component {
                 </Right>
             </Header>
                 <Content>
-                    <Text style={styles.BodyText}>{this.props.object.requirement}, it will be cost around PKR: 6000/-</Text>
+                    <Text style={styles.BodyText}>{this.props.object.requirement}
+                    , it will be cost around PKR: {this.props.object.rupees}/-</Text>
                 </Content>
                 {
                     this.props.messages.map((msg, index) => {

@@ -23,9 +23,9 @@ class Posts extends Component {
     let key = this.props.postsKey;    
     this.props.likePost(key);
   };
-  renderMessage = (requirement) => {
+  renderMessage = (requirement, rupees) => {
     let key = this.props.postsKey;
-    let obj = {requirement, key};
+    let obj = {requirement, key, rupees};
     this.props.MessageKey(obj);
     Actions.message();
   };
@@ -62,7 +62,7 @@ class Posts extends Component {
                 </Button>
               </Left>
               <Body>
-                <Button style={{width: '105%'}} onPress={() => this.renderMessage(requirement)} transparent>
+                <Button style={{width: '105%'}} onPress={() => this.renderMessage(requirement, rupees)} transparent>
                   <Icon active={this.state.comment} name="chatbubbles" /><Text>{comments } COMMENTS</Text>
                 </Button>
               </Body>
