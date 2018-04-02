@@ -24,7 +24,7 @@ class Login extends Component {
         if(loading){
             return <Spinner size='small' />
         }else{
-            return <Button color="#1ad1ff" title="Sigin" onPress={this.login} />            
+            return <Button color="#4A86C5" title="Sigin" onPress={this.login} />            
         };
     };
     login = () => {
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     item: {
         width: "80%",
         marginBottom: 30,
-        borderColor: '#1ad1ff',
+        borderColor: '#4A86C5',
         borderWidth: 5,
         borderRadius: 7,
     },

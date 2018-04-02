@@ -1,5 +1,5 @@
 {
-  "name": "first",
+  "name": "Donate",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,7 +12,9 @@
     "prop-types": "^15.6.0",
     "react": "16.2.0",
     "react-native": "0.53.0",
+    "react-native-ignore-warnings": "^0.1.1",
     "react-native-percentage-circle": "^1.0.6",
+    "react-native-popup-dialog": "^0.11.46",
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-navigation": "^1.0.3",
     "react-redux": "^5.0.7",

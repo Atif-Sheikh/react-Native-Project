@@ -13,4 +13,4 @@ import * as firebase from 'firebase';
     };
     firebase.initializeApp(config);
 
-AppRegistry.registerComponent('first', () => App);
+AppRegistry.registerComponent('Donate', () => App);

@@ -58,15 +58,15 @@ class Home extends Component {
             <Footer>
               <FooterTab style={{backgroundColor: 'white'}}>
                 <Button onPress={()=> this.setState({posts: true, ngos: false, about: false, contact: false, title: 'Home'})} vertical>
-                  <Icon style={this.state.posts ? {color:'#4A86C5'} : '#ACACAC'} name="home" />
+                  <Icon style={this.state.posts ? {color:'#4A86C5'} : ''} name="home" />
                   <Text>Home</Text>
                 </Button>
                 <Button onPress={()=> this.setState({posts: false, ngos: true, about: false, contact: false, title: 'NGOs'})} vertical>
-                  <Icon style={this.state.ngos ? {color:'#4A86C5'} : '#ACACAC'} name="people" />
+                  <Icon style={this.state.ngos ? {color:'#4A86C5'} : ''} name="people" />
                   <Text>NGOs</Text>
                 </Button>
                 <Button onPress={()=> this.setState({posts: false, ngos: false, about: true, contact: false, title: 'About'})} vertical>
-                  <Icon style={this.state.about ? {color:'#4A86C5'} : '#ACACAC'} name="settings" />
+                  <Icon style={this.state.about ? {color:'#4A86C5'} : ''} name="settings" />
                   <Text>About</Text>
                 </Button>
                 <Button onPress={this.props.logOutNow} vertical>

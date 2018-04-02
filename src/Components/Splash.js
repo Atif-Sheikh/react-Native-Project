@@ -8,11 +8,11 @@ class Splash extends Component {
     static navigationOptions = {
         header: null,
     };
-    // componentWillMount(){
-    //     setTimeout(() => {
-    //         Actions.login();
-    //     }, 3000);
-    // }
+    componentWillMount(){
+        setTimeout(() => {
+            Actions.login();
+        }, 3000);
+    }
     render() {
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>

@@ -1,4 +1,4 @@
-package com.first;
+package com.donate;
 
 import android.app.Application;
 

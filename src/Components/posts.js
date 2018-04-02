@@ -6,6 +6,7 @@ import { likePost, MessageKey } from '../store/actions';
 import { Actions } from 'react-native-router-flux';
 import PercentageCircle from 'react-native-percentage-circle';
 import Messages from './comments';
+// import PopupDialog from 'react-native-popup-dialog';
 
 var BUTTONS = ['via Product', 'via Cheque / Cash', 'via Online Payment', 'On Donate Page', "Cancel"];
 var DESTRUCTIVE_INDEX = 3;
@@ -53,7 +54,7 @@ class Posts extends Component {
               <Right>
                     <PercentageCircle radius={20} percent={20} color={"#3498db"}></PercentageCircle>
               </Right>
-            </CardItem>
+            </CardItem> 
             <CardItem cardBody>
                 <Text style={{margin: 5}}>{requirement}, it will be cost around PKR: {rupees}/-</Text>
             </CardItem>
