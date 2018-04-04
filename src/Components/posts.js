@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import { Container, Header, Content, Card, CardItem,
   Thumbnail, ActionSheet, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { connect } from 'react-redux';
-import { likePost, MessageKey } from '../store/actions';
+import { View } from 'react-native';
+import { likePost, MessageKey, Popupdata } from '../store/actions';
 import { Actions } from 'react-native-router-flux';
 import PercentageCircle from 'react-native-percentage-circle';
 import Messages from './comments';
 // import PopupDialog from 'react-native-popup-dialog';
 
-var BUTTONS = ['via Product', 'via Cheque / Cash', 'via Online Payment', 'On Donate Page', "Cancel"];
-var DESTRUCTIVE_INDEX = 3;
-var CANCEL_INDEX = 4;
 
 class Posts extends Component {
   constructor(){
@@ -35,9 +33,21 @@ class Posts extends Component {
     this.props.MessageKey(obj);
     Actions.message();
   };
+  onPressFunc = (rupees) => {
+    let key = this.props.postsKey;
+    let obj = {key, rupees};
+    this.props.Popupdata(obj);
+    this.props.showPopup();
+  };
   render() {
     // console.log(this.props.post);
     const { name, requirement, rupees, likes, month, year, date, comments } = this.props.post;
+    var BUTTONS = ['via Product', 
+      <Text onPress={() => this.onPressFunc(rupees)}>via Cheque / Cash</Text>, 
+      'via Online Payment', 
+      'On Donate Page', "Cancel"];
+    var DESTRUCTIVE_INDEX = 3;
+    var CANCEL_INDEX = 2;
     return (
       <Container style={{display: 'flex', flex: 1, height: 'auto'}}>
         {
@@ -77,14 +87,14 @@ class Posts extends Component {
                       options: BUTTONS,
                       cancelButtonIndex: CANCEL_INDEX,
                       destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                      title: 'Please select option'
+                      title: 'Please select option',
                     },
                     buttonIndex => {
                       this.setState({ clicked: BUTTONS[buttonIndex] });
-                    }
+                    },
                   )} transparent>
                   <Text>DONATE</Text>
-                </Button>                
+                </Button>
               </Right>
             </CardItem>
           </Card>
@@ -108,6 +118,9 @@ function mapDispatchToProp(dispatch) {
       },
       MessageKey: (obj) => {
         dispatch(MessageKey(obj))
+      },
+      Popupdata: (obj) => {
+        dispatch(Popupdata(obj))
       },
     };
 };

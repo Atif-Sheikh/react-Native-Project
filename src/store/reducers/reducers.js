@@ -12,6 +12,7 @@ const INITIAL_STATE = {
     currentRequiremnet: {},
     messages: [],
     length: 2,
+    popupdata: {},
     // key: '',
 };
 
@@ -21,6 +22,12 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 user: action.payload,
+            });
+        case ActionTypes.POPUPDATA:
+            // console.log(action.payload);
+            return ({
+                ...state,
+                popupdata: action.payload,
             });
         case ActionTypes.GETMESSAGES:
             return ({

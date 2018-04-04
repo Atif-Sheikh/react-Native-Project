@@ -46,20 +46,20 @@ class NGOHome extends Component {
             <Footer>
               <FooterTab style={styles.footer}>
                 <Button onPress={()=> this.setState({post: true, ngos: false, about: false, contact: false, title: 'Post'})} vertical>
-                  <Icon style={this.state.post ? {color:'#4A86C5'} : ''} name="home" />
-                  <Text>Home</Text>
+                  <Icon style={this.state.post ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="home" />
+                  <Text style={this.state.post ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>Home</Text>
                 </Button>
                 <Button onPress={()=> this.setState({post: false, ngos: true, about: false, contact: false, title: 'Users'})} vertical>
-                  <Icon style={this.state.ngos ? {color:'#4A86C5'} : ''} name="contacts" />
-                  <Text>Users</Text>
+                  <Icon style={this.state.ngos ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="contacts" />
+                  <Text style={this.state.ngos ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>Users</Text>
                 </Button>
                 <Button onPress={()=> this.setState({post: false, ngos: false, about: true, contact: false, title: 'About'})} vertical>
-                  <Icon style={this.state.about ? {color:'#4A86C5'} : ''} name="settings" />
-                  <Text>About</Text>
+                  <Icon style={this.state.about ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="settings" />
+                  <Text style={this.state.about ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>About</Text>
                 </Button>
                 <Button onPress={this.props.logOutNow} vertical>
-                  <Icon name="ionic" />
-                  <Text>Logout</Text>
+                  <Icon style={{color: '#AAAAAA'}} name="ionic" />
+                  <Text style={{color: '#AAAAAA'}}>Logout</Text>
                 </Button>
               </FooterTab>
             </Footer>

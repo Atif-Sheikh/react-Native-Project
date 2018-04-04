@@ -3,11 +3,14 @@ import { StyleSheet } from 'react-native';
 import CustomHeader from './header';
 import { Actions } from 'react-native-router-flux'; // New code
 import { connect } from 'react-redux';
-import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Spinner } from 'native-base';
-import { logOutNow, GetData } from '../store/actions';
+import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Right,
+    Item, Input, Label } from 'native-base';
+import { logOutNow, GetData, Donate } from '../store/actions';
 import Posts from './posts';
 import NGOs from './ngos';
 import About from './about';
+import Spinner from './spinner';
+import PopupDialog from 'react-native-popup-dialog';
 
 class Home extends Component {
     constructor(){
@@ -18,6 +21,7 @@ class Home extends Component {
             ngos: false,
             about: false,
             contact: false,
+            number: '',
         };
     };
     static navigationOptions = {
@@ -29,19 +33,55 @@ class Home extends Component {
     componentDidMount(){
         this.props.GetData();
     };
+    showPopup = () => {
+        this.popupDialog.show();
+    };
+    donateRupees = () => {
+        const { number } = this.state;
+        if(number){
+            let key = this.props.popupdata.key;
+            let obj = { key, number };
+            this.props.Donate(obj); 
+        }else{
+            alert('Please enter amount!');
+        }
+    };
     render() {
         // const title = this.props.user.userName;
-        // console.log(this.props.postKeys);
+        // console.log(this.props.popupdata);
         return (
             <Container>
             <CustomHeader title={this.state.title} />
+                <PopupDialog
+                    dialogStyle={{borderRadius: -10}}
+                    width={'70%'}
+                    height={'35%'}
+                    dialogTitle={<Text style={styles.dialogTitle}>Selected Cash Option</Text>}
+                    ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+                >
+                <Content style={{padding: 20}}>
+                    <Text style={{color: 'rgba(0,0,0,0.3)'}}>estimated cost {this.props.popupdata.rupees}, please enter your donation amount</Text>
+                    <Item style={{width: '95%', color: 'rgba(0,0,0,0.3)'}} floatingLabel>
+                        <Label style={{color: 'rgba(0,0,0,0.3)'}}>Please enter the amount</Label>
+                        <Input keyboardType='numeric' onChangeText={(text)=> this.setState({number: text.trim()})} /> 
+                    </Item>
+                </Content>
+                <Right style={{marginRight: -100, flexDirection: 'row'}}>
+                    <Button transparent>
+                        <Text>Cancel</Text>
+                    </Button>
+                    <Button transparent>
+                        <Text onPress={this.donateRupees}>Save</Text>
+                    </Button>
+                </Right>
+                </PopupDialog>
             <Content>
                 {
                     this.state.posts ? <Content>
                         {
                             this.props.allPosts ? this.props.allPosts.map((post, index) => {
-                                return <Posts postsKey={this.props.postKeys[index]} post={post} key={index} />
-                            }) : ''
+                                return <Posts showPopup={this.showPopup} postsKey={this.props.postKeys[index]} post={post} key={index} />
+                            }) : <Spinner />
                         }
                     </Content> : null
                 }
@@ -58,20 +98,20 @@ class Home extends Component {
             <Footer>
               <FooterTab style={{backgroundColor: 'white'}}>
                 <Button onPress={()=> this.setState({posts: true, ngos: false, about: false, contact: false, title: 'Home'})} vertical>
-                  <Icon style={this.state.posts ? {color:'#4A86C5'} : ''} name="home" />
-                  <Text>Home</Text>
+                  <Icon style={this.state.posts ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="home" />
+                  <Text style={this.state.posts ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>Home</Text>
                 </Button>
                 <Button onPress={()=> this.setState({posts: false, ngos: true, about: false, contact: false, title: 'NGOs'})} vertical>
-                  <Icon style={this.state.ngos ? {color:'#4A86C5'} : ''} name="people" />
-                  <Text>NGOs</Text>
+                  <Icon style={this.state.ngos ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="people" />
+                  <Text style={this.state.ngos ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>NGOs</Text>
                 </Button>
                 <Button onPress={()=> this.setState({posts: false, ngos: false, about: true, contact: false, title: 'About'})} vertical>
-                  <Icon style={this.state.about ? {color:'#4A86C5'} : ''} name="settings" />
-                  <Text>About</Text>
+                  <Icon style={this.state.about ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="settings" />
+                  <Text style={this.state.about ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>About</Text>
                 </Button>
                 <Button onPress={this.props.logOutNow} vertical>
-                  <Icon name="ionic" />
-                  <Text>Logout</Text>
+                  <Icon style={{color:'#AAAAAA'}} name="ionic" />
+                  <Text style={{color:'#AAAAAA'}}>Logout</Text>
                 </Button>
               </FooterTab>
             </Footer>
@@ -90,7 +130,12 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     footer: {
-        // backgroundColor: 'white',
+        backgroundColor: '#AAAAAA',
+    },
+    dialogTitle: {
+        padding: 20, 
+        fontWeight: 'bold', 
+        fontSize: 25
     },
 });
 
@@ -99,6 +144,7 @@ function mapStateToProp(state) {
         user: state.root.user,
         allPosts: state.root.allPosts,
         postKeys: state.root.keys, 
+        popupdata: state.root.popupdata, 
     });
 };
 function mapDispatchToProp(dispatch) {
@@ -108,6 +154,9 @@ function mapDispatchToProp(dispatch) {
         },
         GetData: () => {
             dispatch(GetData())
+        },
+        Donate: (obj) => {
+            dispatch(Donate(obj))
         },
     };
 };

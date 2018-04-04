@@ -31,20 +31,51 @@ export const SignupNow = (data) => {
         });
     };
 };
-export const CommentLength = (key) => {
+export const Popupdata = (obj) => {
     return dispatch => {
-        InteractionManager.runAfterInteractions(() => {
-            console.log(key);
-            firebase.database().ref(`/messages/${key}`).on('value', snap => {
-                let data = snap.val();
-                let arr = [];
-                let length;
-                for(let key in data){
-                    arr.push(data[key]);
-                }
-                length = arr.length;
-                dispatch({ type: ActionTypes.COMMENTLENGTH, payload: length });
-            })
+        // console.log(obj);
+        dispatch({ type: ActionTypes.POPUPDATA, payload: obj });
+    };
+};
+export const Donate = (obj) => {
+    return dispatch => {
+        firebase.database().ref(`/posts/${obj.key}`).on('value', snap => {
+            console.log(snap.val());
+        })
+    };
+};
+// export const CommentLength = (key) => {
+//     return dispatch => {
+//         InteractionManager.runAfterInteractions(() => {
+//             console.log(key);
+//             firebase.database().ref(`/messages/${key}`).on('value', snap => {
+//                 let data = snap.val();
+//                 let arr = [];
+//                 let length;
+//                 for(let key in data){
+//                     arr.push(data[key]);
+//                 }
+//                 length = arr.length;
+//                 dispatch({ type: ActionTypes.COMMENTLENGTH, payload: length });
+//             })
+//         });
+//     };
+// };
+export const CheckLogin = () => {
+    return dispatch => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if(user){
+                firebase.database().ref(`/users/${user.uid}`).on('value', snap => {
+                    let data = snap.val();
+                    if(data['accountType'] === 'ngo'){
+                        Actions.NGOHome();
+                    }else if(data['accountType'] === 'user'){
+                        Actions.home();
+                    }
+                })
+            }else{
+                Actions.login();
+            }
         });
     };
 };
