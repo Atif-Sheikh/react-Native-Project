@@ -73,11 +73,11 @@ class Home extends Component {
                     </Item>
                 </Content>
                 <Right style={{marginRight: -100, flexDirection: 'row'}}>
-                    <Button transparent>
-                        <Text onPress={this.cancelButton}>Cancel</Text>
+                    <Button onPress={this.cancelButton} transparent>
+                        <Text>Cancel</Text>
                     </Button>
-                    <Button transparent>
-                        <Text onPress={this.donateRupees}>Save</Text>
+                    <Button onPress={this.donateRupees} transparent>
+                        <Text>Save</Text>
                     </Button>
                 </Right>
                 </PopupDialog>
