@@ -36,12 +36,18 @@ class Home extends Component {
     showPopup = () => {
         this.popupDialog.show();
     };
+    cancelButton = () => {
+        this.popupDialog.dismiss();                     
+    };
     donateRupees = () => {
         const { number } = this.state;
         if(number){
             let key = this.props.popupdata.key;
             let obj = { key, number };
-            this.props.Donate(obj); 
+            this.props.Donate(obj);
+            this.popupDialog.dismiss(() => {
+                alert('Successfully Donate:', number); 
+            });            
         }else{
             alert('Please enter amount!');
         }
@@ -53,7 +59,7 @@ class Home extends Component {
             <Container>
             <CustomHeader title={this.state.title} />
                 <PopupDialog
-                    dialogStyle={{borderRadius: -10}}
+                    dialogStyle={{borderRadius: -10, marginBottom: 200}}
                     width={'70%'}
                     height={'35%'}
                     dialogTitle={<Text style={styles.dialogTitle}>Selected Cash Option</Text>}
@@ -68,7 +74,7 @@ class Home extends Component {
                 </Content>
                 <Right style={{marginRight: -100, flexDirection: 'row'}}>
                     <Button transparent>
-                        <Text>Cancel</Text>
+                        <Text onPress={this.cancelButton}>Cancel</Text>
                     </Button>
                     <Button transparent>
                         <Text onPress={this.donateRupees}>Save</Text>
@@ -77,7 +83,7 @@ class Home extends Component {
                 </PopupDialog>
             <Content>
                 {
-                    this.state.posts ? <Content>
+                    this.state.posts ? <Content style={{margin: 5}}>
                         {
                             this.props.allPosts ? this.props.allPosts.map((post, index) => {
                                 return <Posts showPopup={this.showPopup} postsKey={this.props.postKeys[index]} post={post} key={index} />

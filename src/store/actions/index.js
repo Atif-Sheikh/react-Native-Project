@@ -39,8 +39,16 @@ export const Popupdata = (obj) => {
 };
 export const Donate = (obj) => {
     return dispatch => {
-        firebase.database().ref(`/posts/${obj.key}`).on('value', snap => {
-            console.log(snap.val());
+        InteractionManager.runAfterInteractions(() => {
+            console.log(obj);
+            let dbDonation;
+            let donateRupees;
+            firebase.database().ref(`/posts/${obj.key}`).on('value', snap => {
+                let data = snap.val();
+                dbDonation = Number(data['donation']);
+                donateRupees = Number(obj.number);
+            })
+            firebase.database().ref(`/posts/${obj.key}`).update({donation: dbDonation+donateRupees});
         })
     };
 };
@@ -256,6 +264,7 @@ export const Requirement = (data) => {
                     data.name = name;
                     data.likes = 0;
                     data.comments = 0;
+                    data.donation = 0;
                     // data.number = user.phoneNumber;
                     firebase.database().ref(`/posts/`).push(data);
                 }

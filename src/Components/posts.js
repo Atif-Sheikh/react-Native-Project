@@ -41,13 +41,14 @@ class Posts extends Component {
   };
   render() {
     // console.log(this.props.post);
-    const { name, requirement, rupees, likes, month, year, date, comments } = this.props.post;
+    const { name, requirement, rupees, likes, month, year, date, comments, donation } = this.props.post;
     var BUTTONS = ['via Product', 
       <Text onPress={() => this.onPressFunc(rupees)}>via Cheque / Cash</Text>, 
       'via Online Payment', 
       'On Donate Page', "Cancel"];
-    var DESTRUCTIVE_INDEX = 3;
-    var CANCEL_INDEX = 2;
+    var DESTRUCTIVE_INDEX = 1;
+    var CANCEL_INDEX = 1;
+    let donationCircle = Math.floor((donation/rupees)*100);
     return (
       <Container style={{display: 'flex', flex: 1, height: 'auto'}}>
         {
@@ -62,7 +63,7 @@ class Posts extends Component {
                 </Body>
               </Left>
               <Right>
-                    <PercentageCircle radius={20} percent={20} color={"#3498db"}></PercentageCircle>
+                    <PercentageCircle radius={20} percent={donationCircle} color={"#3498db"}></PercentageCircle>
               </Right>
             </CardItem> 
             <CardItem cardBody>
@@ -90,7 +91,7 @@ class Posts extends Component {
                       title: 'Please select option',
                     },
                     buttonIndex => {
-                      this.setState({ clicked: BUTTONS[buttonIndex] });
+                      this.setState({ clicked: BUTTONS[buttonIndex]});
                     },
                   )} transparent>
                   <Text>DONATE</Text>
