@@ -49,7 +49,7 @@ class Message extends Component {
                     </Body>
                 </Left>
                 <Right>
-                    <Text onPress={() => Actions.home()} style={styles.close}>x</Text>
+                    <Text onPress={() => Actions.pop()} style={styles.close}>x</Text>
                 </Right>
             </Header>
                 <Content>

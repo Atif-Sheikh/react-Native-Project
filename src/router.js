@@ -9,6 +9,7 @@ import NGOHome from './Components/ngoHome';
 import Messages from './Components/comments';
 import CustomHeader from './Components/header';
 import Splash from './Components/Splash';
+import NGOsPosts from './Components/ngosPosts';
 
 export default class Routers extends Component{
     render(){
@@ -20,7 +21,7 @@ export default class Routers extends Component{
                 component={Splash}
                 title='Splash'
                 initial                  
-                />
+              />
               <Scene
                 key="login"
                 component={Login}
@@ -30,14 +31,18 @@ export default class Routers extends Component{
                 component={Home}
                 title="Home"
                 />
+              <Scene key='ngosPosts'
+                component={NGOsPosts}
+                title='Your Posts'
+              />
               <Scene key="message"
                 component={Messages}
                 title="Messages"
-              />
+                />
               <Scene key="NGOHome"
                 component={NGOHome}
                 title='NGOHOME'
-              />
+                />
               <Scene
                 key="signup"
                 component={Signup}

@@ -3,10 +3,11 @@ import { StyleSheet } from 'react-native';
 import CustomHeader from './header';
 import { Actions } from 'react-native-router-flux'; // New code
 import { connect } from 'react-redux';
-import { logOutNow } from '../store/actions';
+import { logOutNow, GetNGOData } from '../store/actions';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Spinner } from 'native-base';
 import Post from './post';
 import Users from './users';
+import NGOSPosts from './ngosPosts';
 
 class NGOHome extends Component {
     constructor(){
@@ -18,6 +19,9 @@ class NGOHome extends Component {
             about: false,
             contact: false,
         };
+    };
+    componentDidMount(){
+        this.props.GetNGOData();
     };
     logOut = () => {
         this.props.logOutNow();
@@ -37,7 +41,13 @@ class NGOHome extends Component {
                     this.state.ngos ? <Users /> : null
                 }
                 {
-                    this.state.about ? <Text>About</Text> : null                    
+                    this.state.about ? <Content style={{margin: 5}}>
+                        {
+                            this.props.allPosts ? this.props.allPosts.map((post, index) => {
+                                return <NGOSPosts showPopup={this.showPopup} postsKey={this.props.postKeys[index]} post={post} key={index} />
+                            }) : <Spinner />
+                        }
+                    </Content> : null                     
                 }
                 {
                     this.state.contact ? <Text>under Construction</Text> : null                    
@@ -85,12 +95,17 @@ function mapStateToProp(state) {
     return ({
         user: state.root.user,
         email: state.root.email,
+        allPosts: state.root.ngosPosts,
+        postKeys: state.root.ngosPostsKeys, 
     });
 };
 function mapDispatchToProp(dispatch) {
     return {
         logOutNow: () => {
             dispatch(logOutNow())
+        },
+        GetNGOData: () => {
+            dispatch(GetNGOData())
         },
     };
 };

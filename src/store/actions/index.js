@@ -173,6 +173,30 @@ export const getUsers = () => {
         });
     };
 };
+export const GetNGOData = () => {
+    return dispatch => {
+        InteractionManager.runAfterInteractions(() => {
+            firebase.auth().onAuthStateChanged((user) => {
+                if(user){
+                    firebase.database().ref(`/posts`).on('value', snap => {
+                        let data = snap.val();
+                        let NGOsPosts = [];
+                        let NGOsPostsKeys = [];
+                        for(let key in data){
+                            if(data[key]['UID'] === user.uid){
+                                NGOsPostsKeys.push(key);
+                                NGOsPosts.push(data[key]);
+                            }
+                        }
+                        console.log(NGOsPosts, NGOsPostsKeys)
+                    dispatch({type: ActionTypes.NGOSPOSTS, payload: NGOsPosts});
+                    dispatch({type: ActionTypes.NGOSPOSTSKEYS, payload: NGOsPostsKeys});
+                    })
+                }
+            })
+        });
+    };
+};
 export const GetData = () => {
     return dispatch => {
         InteractionManager.runAfterInteractions(() => {

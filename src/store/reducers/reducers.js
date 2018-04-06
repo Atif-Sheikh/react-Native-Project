@@ -13,6 +13,8 @@ const INITIAL_STATE = {
     messages: [],
     length: 2,
     popupdata: {},
+    ngosPosts: [],
+    ngosPostsKeys: [],
     // key: '',
 };
 
@@ -28,6 +30,16 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 popupdata: action.payload,
+            });
+        case ActionTypes.NGOSPOSTS:
+            return({
+                ...state,
+                ngosPosts: action.payload,
+            });
+        case ActionTypes.NGOSPOSTSKEYS:
+            return({
+                ...state,
+                ngosPostsKeys: action.payload,
             });
         case ActionTypes.GETMESSAGES:
             return ({
