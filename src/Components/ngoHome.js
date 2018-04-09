@@ -20,6 +20,11 @@ class NGOHome extends Component {
             contact: false,
         };
     };
+    componentWillMount(){
+        BackHandler.addEventListener('hardwareBackPress',  function(){
+            BackHandler.exitApp()
+        });
+    };
     componentDidMount(){
         this.props.GetNGOData();
     };

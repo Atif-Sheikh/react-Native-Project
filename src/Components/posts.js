@@ -16,6 +16,7 @@ class Posts extends Component {
     this.state = {
       like: false,
       comment: false,
+      clicked: false,
     };
   };
   toggleState = () => {
@@ -42,8 +43,8 @@ class Posts extends Component {
   render() {
     // console.log(this.props.post);
     const { name, requirement, rupees, likes, month, year, date, comments, donation } = this.props.post;
-    var BUTTONS = ['via Product', 
-      <Text onPress={() => this.onPressFunc(rupees)}>via Cheque / Cash</Text>, 
+    var BUTTONS = ['via Product',
+      'via Cheque / Cash', 
       'via Online Payment', 
       'On Donate Page', "Cancel"];
     var DESTRUCTIVE_INDEX = 1;
@@ -91,7 +92,7 @@ class Posts extends Component {
                       title: 'Please select option',
                     },
                     buttonIndex => {
-                      this.setState({ clicked: BUTTONS[buttonIndex]});
+                      this.onPressFunc(rupees)
                     },
                   )} transparent>
                   <Text>DONATE</Text>
