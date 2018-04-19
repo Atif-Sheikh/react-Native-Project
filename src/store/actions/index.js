@@ -5,7 +5,7 @@ import { InteractionManager } from 'react-native';
 export const SignupNow = (data) => {
     return dispatch => {
         dispatch({ type: ActionTypes.SIGNUPERROR, payload: '' });                     
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             let { email, password, userName, accountType, number } = data;
             console.log(email, password)
             firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -21,6 +21,9 @@ export const SignupNow = (data) => {
                     firebase.database().ref(`/users/${result.uid}`).set(user1).then((user) => {
                         firebase.auth().currentUser.updateProfile({displayName: userName, phoneNumber: number})
                         dispatch({ type: ActionTypes.SIGNUP, payload: user1 })
+                        if(accountType === 'ngo'){
+                            dispatch({type: ActionTypes.NGO, payload: 'NGO'});                                                    
+                        }
                         Actions.home();
                     })
                 })
@@ -28,7 +31,7 @@ export const SignupNow = (data) => {
                     console.log(error);                    
                     dispatch({ type: ActionTypes.SIGNUPERROR, payload: error.message });            
                 });
-        });
+        // });
     };
 };
 export const Popupdata = (obj) => {
@@ -39,7 +42,7 @@ export const Popupdata = (obj) => {
 };
 export const Donate = (obj) => {
     return dispatch => {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             console.log(obj);
             let dbDonation;
             let donateRupees;
@@ -49,7 +52,7 @@ export const Donate = (obj) => {
                 donateRupees = Number(obj.number);
             })
             firebase.database().ref(`/posts/${obj.key}`).update({donation: dbDonation+donateRupees});
-        })
+        // })
     };
 };
 // export const CommentLength = (key) => {
@@ -76,13 +79,14 @@ export const CheckLogin = () => {
                 firebase.database().ref(`/users/${user.uid}`).on('value', snap => {
                     let data = snap.val();
                     if(data['accountType'] === 'ngo'){
-                        Actions.NGOHome();
+                        dispatch({type: ActionTypes.NGO, payload: 'NGO'});
+                        Actions.home();
                     }else if(data['accountType'] === 'user'){
                         Actions.home();
                     }
                 })
             }else{
-                Actions.login();
+                Actions.withoutAuth();
             }
         });
     };
@@ -115,7 +119,7 @@ export const getNGOs = () => {
 };
 export const SendMessage = (obj) => {
     return dispatch => {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             console.log(obj);
             let msg = obj.msg;
             var name;
@@ -139,26 +143,26 @@ export const SendMessage = (obj) => {
                     })
                 }
             })
-        });
+        // });
     };
 };
 export const GetMessages = (key) => {
     return dispatch => {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             firebase.database().ref(`/messages/${key}`).on('value', snap => {
-                let data = snap.val();
                 let messages = [];
+                let data = snap.val();
                 for(let key in data){
                     messages.push(data[key]);
                 }
                 dispatch({ type: ActionTypes.GETMESSAGES, payload: messages });
-            })
+            // })
         });
     };
 };
 export const getUsers = () => {
     return dispatch => {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             firebase.database().ref(`/users`).on('value', snap => {
                 let data = snap.val();
                 let users = [];
@@ -170,7 +174,7 @@ export const getUsers = () => {
                 // console.log(ngos);
                 dispatch({ type: ActionTypes.GETUSERS, payload: users});
             })
-        });
+        // });
     };
 };
 export const GetNGOData = () => {
@@ -199,10 +203,10 @@ export const GetNGOData = () => {
 };
 export const GetData = () => {
     return dispatch => {
-        InteractionManager.runAfterInteractions(() => {
-            // console.log('console')
+        // InteractionManager.runAfterInteractions(() => {
+            console.log('console') 
             firebase.database().ref(`/posts/`).on('value', snap => {
-            // console.log('console')            
+            console.log(snap.val());            
                 let data = snap.val();
                 let allPosts = [];
                 let postKeys = [];
@@ -216,12 +220,12 @@ export const GetData = () => {
                 dispatch({type: ActionTypes.GETKEYS, payload: postKeys});            
                 dispatch({type: ActionTypes.GETDATA, payload: allPosts});
             })
-        });
+        // });
     };
 };
 export const likePost = (key) => {
     return dispatch => {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             // console.log('like', key);
             let totalLikes;
             let UID;
@@ -254,7 +258,7 @@ export const likePost = (key) => {
                     }
                 }
             })
-        });
+        // });
     };
 };
 // export const dislikePost = (key) => {
@@ -296,11 +300,10 @@ export const Requirement = (data) => {
         });
     };
 };
-
 export const SiginNow = (user) => {
     return dispatch => {
         dispatch({ type: ActionTypes.ERROR, payload: '' });
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             console.log(user);        
             firebase.auth().signInWithEmailAndPassword(user.email, user.password)
             .then((result) => {
@@ -308,10 +311,12 @@ export const SiginNow = (user) => {
                     firebase.database().ref(`/users/${result.uid}/`).on('value', snap => {
                         let data = snap.val();
                         if(data.accountType === 'ngo'){
-                            dispatch({ type: ActionTypes.SIGNIN, payload: result })
-                            Actions.NGOHome();
+                            dispatch({ type: ActionTypes.SIGNIN, payload: result });                            
+                            dispatch({type: ActionTypes.NGO, payload: 'NGO'});                        
+                            Actions.home();
                         }else{
-                            dispatch({ type: ActionTypes.SIGNIN, payload: result })
+                            dispatch({ type: ActionTypes.SIGNIN, payload: result });
+                            dispatch({type: ActionTypes.NGO, payload: 'user'});                        
                             Actions.home();
                         }
                     });
@@ -320,7 +325,7 @@ export const SiginNow = (user) => {
                 console.log(error)            
                 dispatch({ type: ActionTypes.ERROR, payload: error.message });
             });
-        });
+        // }); 
     };
 };
 export const logOutNow = () => {

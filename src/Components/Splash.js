@@ -12,6 +12,7 @@ class Splash extends Component {
     };
     componentWillMount(){
         setTimeout(() => {
+            // Actions.withoutAuth();
             this.props.CheckLogin();
         }, 1000);
     }

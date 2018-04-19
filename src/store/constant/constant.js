@@ -16,6 +16,7 @@ const ActionTypes = {
     POPUPDATA: 'POPUPDATA', 
     NGOSPOSTS: 'NGOSPOSTS',
     NGOSPOSTSKEYS: 'NGOSPOSTSKEYS',
+    NGO: 'NGO',
     // MESSAGEKEY: 'MESSAGEKEY',
 }
 

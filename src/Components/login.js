@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, Button, Keyboard } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, Keyboard, BackHandler } from 'react-native';
 import CustomHeader from './header';
 import { Content, Input, Item } from 'native-base';
 import { Actions } from 'react-native-router-flux'; // New code
@@ -15,6 +15,11 @@ class Login extends Component {
             password: '',
             loading: false,
         };
+    };
+    componentWillMount(){
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            BackHandler.exitApp()
+        });
     };
     static navigationOptions = {
         header: null

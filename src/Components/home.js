@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, BackHandler } from 'react-native';
+import { StyleSheet, BackHandler, Keyboard } from 'react-native';
 import CustomHeader from './header';
 import { Actions } from 'react-native-router-flux'; // New code
 import { connect } from 'react-redux';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Right,
-    Item, Input, Label } from 'native-base';
-import { logOutNow, GetData, Donate } from '../store/actions';
+    Item, Input, Label, Fab, Card, Form } from 'native-base';
+import { logOutNow, GetData, Donate, Requirement } from '../store/actions';
 import Posts from './posts';
 import NGOs from './ngos';
 import About from './about';
@@ -22,49 +22,75 @@ class Home extends Component {
             about: false,
             contact: false,
             number: '',
+            active: false,
+            requirement: '',
+            rupees: '',
         };
     };
     static navigationOptions = {
         header: null,
     };
     componentWillMount(){
-        BackHandler.addEventListener('hardwareBackPress',  function(){
-            BackHandler.exitApp()
-        });
+        this.props.GetData();
+        // BackHandler.addEventListener('hardwareBackPress', () => {
+        //     BackHandler.exitApp()
+        // });
     };
     logOut = () => {
         this.props.logOutNow();
     };
     componentDidMount(){
-        this.props.GetData();
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            BackHandler.exitApp()
+        });
     };
     showPopup = () => {
         this.popupDialog.show();
     };
     cancelButton = () => {
+        Keyboard.dismiss();                        
         this.popupDialog.dismiss();                     
     };
     donateRupees = () => {
         const { number } = this.state;
+        Keyboard.dismiss();                
         if(number){
             let key = this.props.popupdata.key;
             let obj = { key, number };
             this.props.Donate(obj);
             this.popupDialog.dismiss(() => {
                 alert('Successfully Donate:', number); 
-            });            
+            });        
+            this.setState({number: ''});    
         }else{
             alert('Please enter amount!');
         }
     };
+    submit = (e) => {
+        e.preventDefault();
+        const { requirement, rupees } = this.state;
+        if(requirement && rupees){
+            let now = new Date();
+            let abc = ['Januray', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            let month = abc[now.getMonth()];
+            let year = now.getFullYear();
+            let date = now.getDate();
+            let data = { requirement, rupees, month, year, date };
+            this.popupDialog1.dismiss();
+            Keyboard.dismiss();                                    
+            this.props.Requirement(data);
+        }else{
+            alert('Please Enter all fields!');
+        }
+    };
     render() {
         // const title = this.props.user.userName;
-        // console.log(this.props.popupdata);
+        console.log(this.props.allPosts);
         return (
             <Container>
-            <CustomHeader title={this.state.title} />
+            <CustomHeader title={this.state.title} title2='Logout' />
                 <PopupDialog
-                    dialogStyle={{borderRadius: -10, marginBottom: 200}}
+                    dialogStyle={{borderRadius: -10, marginBottom: 220}}
                     width={'70%'}
                     height={'35%'}
                     dialogTitle={<Text style={styles.dialogTitle}>Selected Cash Option</Text>}
@@ -73,8 +99,8 @@ class Home extends Component {
                 <Content style={{padding: 20}}>
                     <Text style={{color: 'rgba(0,0,0,0.3)'}}>estimated cost {this.props.popupdata.rupees}, please enter your donation amount</Text>
                     <Item style={{width: '95%', color: 'rgba(0,0,0,0.3)'}} floatingLabel>
-                        <Label style={{color: 'rgba(0,0,0,0.3)'}}>Please enter the amount</Label>
-                        <Input keyboardType='numeric' onChangeText={(text)=> this.setState({number: text.trim()})} /> 
+                        <Label style={{color: 'rgba(0,0,0,0.3)', marginBottom: 8}}>Please enter the amount</Label>
+                        <Input style={{height: 40}} keyboardType='numeric' onChangeText={(text)=> this.setState({number: text.trim()})} /> 
                     </Item>
                 </Content>
                 <Right style={{marginRight: -100, flexDirection: 'row'}}>
@@ -106,6 +132,40 @@ class Home extends Component {
                     this.state.contact ? <Text>under Construction</Text> : null                    
                 }
             </Content>
+            <PopupDialog
+                    dialogStyle={{borderRadius: -10, marginBottom: 220}}
+                    width={'70%'}
+                    height={'35%'}
+                    dialogTitle={<Text>Post</Text>}
+                    ref={(popupDialog1) => { this.popupDialog1 = popupDialog1; }}
+                >
+                <Card style={{height: 'auto', padding: 5}}>
+                    <Form>
+                        <Item floatingLabel>
+                        <Label>Post Your requirement...</Label>
+                        <Input onChangeText={(text)=> this.setState({requirement: text})} />
+                        </Item>
+                        <Item>
+                            <Label>Enter Rupees...</Label>
+                            <Input keyboardType='numeric' onChangeText={(text)=> this.setState({rupees: text})} />
+                        </Item>
+                        <Button onPress={this.submit} style={{margin: 10}}  full>
+                            <Text>Post</Text>
+                        </Button>
+                    </Form>
+                </Card>
+            </PopupDialog>
+            {
+                this.props.ngo === 'NGO' ? <Fab
+                active={this.state.active} 
+                containerStyle={{ marginBottom: '12%' }}
+                style={{ backgroundColor: '#673bb7' }}
+                position="bottomRight"
+                onPress={() => this.popupDialog1.show()}>
+                    <Icon name="add" />
+            </Fab>
+                : null
+            }
             <Footer>
               <FooterTab style={{backgroundColor: 'white'}}>
                 <Button onPress={()=> this.setState({posts: true, ngos: false, about: false, contact: false, title: 'Home'})} vertical>
@@ -113,16 +173,16 @@ class Home extends Component {
                   <Text style={this.state.posts ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>Home</Text>
                 </Button>
                 <Button onPress={()=> this.setState({posts: false, ngos: true, about: false, contact: false, title: 'NGOs'})} vertical>
-                  <Icon style={this.state.ngos ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="people" />
+                  <Icon style={this.state.ngos ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="contacts" />
                   <Text style={this.state.ngos ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>NGOs</Text>
                 </Button>
                 <Button onPress={()=> this.setState({posts: false, ngos: false, about: true, contact: false, title: 'About'})} vertical>
                   <Icon style={this.state.about ? {color:'#4A86C5'} : {color:'#AAAAAA'}} name="settings" />
                   <Text style={this.state.about ? {color:'#4A86C5'} : {color:'#AAAAAA'}}>About</Text>
                 </Button>
-                <Button onPress={this.props.logOutNow} vertical>
-                  <Icon style={{color:'#AAAAAA'}} name="ionic" />
-                  <Text style={{color:'#AAAAAA'}}>Logout</Text>
+                <Button onPress={() => this.setState({posts: false, ngos: false, about: false, contact: true, title: 'Contacts'})} vertical>
+                  <Icon style={{color:'#AAAAAA'}} name="people" />
+                  <Text style={{color:'#AAAAAA'}}>Contact</Text>
                 </Button>
               </FooterTab>
             </Footer>
@@ -155,7 +215,8 @@ function mapStateToProp(state) {
         user: state.root.user,
         allPosts: state.root.allPosts,
         postKeys: state.root.keys, 
-        popupdata: state.root.popupdata, 
+        popupdata: state.root.popupdata,
+        ngo: state.root.NGO, 
     });
 };
 function mapDispatchToProp(dispatch) {
@@ -168,6 +229,9 @@ function mapDispatchToProp(dispatch) {
         },
         Donate: (obj) => {
             dispatch(Donate(obj))
+        },
+        Requirement: (data) => {
+            dispatch(Requirement(data))
         },
     };
 };

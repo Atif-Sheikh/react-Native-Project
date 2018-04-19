@@ -5,7 +5,7 @@ import Signup from './Components/signup';
 import Login from './Components/login';
 import Home from './Components/home';
 import Posts from './Components/posts';
-import NGOHome from './Components/ngoHome';
+import WithoutAuth from './Components/withoutAuth';
 import Messages from './Components/comments';
 import CustomHeader from './Components/header';
 import Splash from './Components/Splash';
@@ -21,7 +21,7 @@ export default class Routers extends Component{
                 component={Splash}
                 title='Splash'
                 initial                  
-              />
+                />
               <Scene
                 key="login"
                 component={Login}
@@ -39,15 +39,15 @@ export default class Routers extends Component{
                 component={Messages}
                 title="Messages"
                 />
-              <Scene key="NGOHome"
-                component={NGOHome}
+              <Scene key="withoutAuth"
+                component={WithoutAuth}
                 title='NGOHOME'
                 />
               <Scene
                 key="signup"
                 component={Signup}
                 title="Signup"
-              />
+                />
             </Scene>
           </Router>
         );

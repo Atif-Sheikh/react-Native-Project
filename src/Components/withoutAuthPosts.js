@@ -11,7 +11,7 @@ import PercentageCircle from 'react-native-percentage-circle';
 import Messages from './comments';
 // import PopupDialog from 'react-native-popup-dialog';
 
-class Posts extends Component {
+class WithoutAuthPosts extends Component {
   constructor() {
     super();
     this.state = {
@@ -23,46 +23,21 @@ class Posts extends Component {
   toggleState = () => {
     this.setState({ comment: false });
   };
-  likePost = () => {
-    // firebase.auth().onAuthStateChanged((user) => {
-      // if(user){
-        const { like } = this.state;
-        this.setState({ like: !like });
-        let key = this.props.postsKey;
-        this.props.likePost(key);
-      // }else{
-      //   alert('Please Login First');
-      // }
-    // })
-  };
   renderMessage = (requirement, rupees) => {
     let key = this.props.postsKey;
     let obj = { requirement, key, rupees };
     this.props.MessageKey(obj);
     Actions.message();
   };
-  onPressFunc = (rupees) => {
-    // firebase.auth().onAuthStateChanged((user) => {
-      // if(user){
-        let key = this.props.postsKey;
-        let obj = { key, rupees };
-        this.props.Popupdata(obj);
-        this.props.showPopup();
-      // }else{
-      //   alert('Please Login First');        
-      // }
-    // })
-  };
   render() {
-    // console.log(this.props.post);
+    console.log(this.props.post);
     const { name, requirement, rupees, likes, month, year, date, comments, donation } = this.props.post;
     var BUTTONS = ['via Product',
       'via Cheque / Cash',
       'via Online Payment',
       'On Donate Page', "Cancel"];
-    var DESTRUCTIVE_INDEX = 2;
-    var CANCEL_INDEX = 3;
-
+    var DESTRUCTIVE_INDEX = 3;
+    var CANCEL_INDEX = 4;
     let donationCircle = Math.floor((donation / rupees) * 100);
     return (
       <Container style={{ display: 'flex', flex: 1, height: 'auto' }}>
@@ -86,30 +61,18 @@ class Posts extends Component {
               </CardItem>
               <CardItem>
                 <Left>
-                  <Button onPress={this.likePost} transparent>
+                  <Button onPress={() => alert('Please Login')} transparent>
                     <Icon active name="thumbs-up" />
                     <Text>{likes}</Text>
                   </Button>
                 </Left>
                 <Body>
-                  <Button style={{ width: '110%' }} onPress={() => this.renderMessage(requirement, rupees)} transparent>
+                  <Button style={{ width: '115%' }} onPress={() => this.renderMessage(requirement, rupees)} transparent>
                     <Icon active={this.state.comment} name="chatbubbles" /><Text>{comments} COMMENTS</Text>
                   </Button>
                 </Body>
                 <Right>
-                  <Button onPress={() =>
-                    ActionSheet.show(
-                      {
-                        options: BUTTONS,
-                        cancelButtonIndex: CANCEL_INDEX,
-                        destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                        title: 'Please select option',
-                      },
-                      buttonIndex => {
-                        this.onPressFunc(rupees),
-                        this.setState({clicked: BUTTONS[buttonIndex]})
-                      },
-                    )} transparent>
+                  <Button onPress={() => alert('Please Login')}transparent>
                     <Text>DONATE</Text>
                   </Button>
                 </Right>
@@ -124,22 +87,22 @@ class Posts extends Component {
 
 function mapStateToProp(state) {
   return ({
-    length: state.root.length,
+    // length: state.root.length,
     // PostKeys: state.root.postKeys, 
   });
 };
 function mapDispatchToProp(dispatch) {
   return {
-    likePost: (key) => {
-      dispatch(likePost(key))
-    },
+    // likePost: (key) => {
+    //   dispatch(likePost(key))
+    // },
     MessageKey: (obj) => {
       dispatch(MessageKey(obj))
     },
-    Popupdata: (obj) => {
-      dispatch(Popupdata(obj))
-    },
+    // Popupdata: (obj) => {
+    //   dispatch(Popupdata(obj))
+    // },
   };
 };
 
-export default connect(mapStateToProp, mapDispatchToProp)(Posts);
+export default connect(mapStateToProp, mapDispatchToProp)(WithoutAuthPosts);

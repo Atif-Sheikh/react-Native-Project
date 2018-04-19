@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, BackHandler } from 'react-native';
 import CustomHeader from './header';
 import { Actions } from 'react-native-router-flux'; // New code
 import { connect } from 'react-redux';

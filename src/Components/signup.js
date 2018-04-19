@@ -12,7 +12,7 @@ import { Actions } from 'react-native-router-flux'; // New code
 import { connect } from 'react-redux';
 import { SignupNow } from '../store/actions'
 import CustomHeader from './header';
-import { Content, Input, Item, } from 'native-base';
+import { Content, Input, Item, CheckBox, Body } from 'native-base';
 import Spinner from './spinner';
 
 class Signup extends Component {
@@ -24,6 +24,9 @@ class Signup extends Component {
             password: '',
             loading: false,
             number: '',
+            accountType: 'user',
+            user: true,
+            ngo: false,
         };
     };
     static navigationOptions = {
@@ -38,13 +41,13 @@ class Signup extends Component {
         };
     };
     signup = () => {
-        const { email, password, userName, number } = this.state;
+        const { email, password, userName, number, accountType } = this.state;
         if(email.trim() && password.trim() && userName.trim() && number.trim()){
             const obj = {
                 userName,
                 email,
                 password,
-                accountType: 'user',
+                accountType,
                 number,
             };
             this.props.SignupNow(obj);
@@ -77,6 +80,19 @@ class Signup extends Component {
                 <Item style={styles.item} regular>
                     <Input placeholder='+923********' keyboardType='numeric' onChangeText={(text)=> this.setState({number: text.trim()})} />
                 </Item>
+                <View style={{flexDirection: 'row'}}>
+                <Text>
+                    AccountType:
+                </Text>
+                <Body>
+                    <Text>Donator</Text>
+                    <CheckBox onPress={() => this.setState({ accountType: 'user', user: true, ngo: false })} checked={this.state.user} />
+                </Body>
+                <Body>
+                    <Text>NGO</Text>
+                    <CheckBox onPress={() => this.setState({ accountType: 'ngo', user: false, ngo: true })} checked={this.state.ngo} />
+                </Body>
+                </View>
                 <Text style={{fontSize: 20, color: 'red'}}>{this.props.error}</Text>                
                 <View style={styles.btn}>
                     { this.renderFunc() }
@@ -91,11 +107,11 @@ class Signup extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff',
-        paddingBottom: 175
+        paddingBottom: 150
     },
     body: {
         flex: 1,

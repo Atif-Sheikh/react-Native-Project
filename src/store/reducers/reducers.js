@@ -15,7 +15,7 @@ const INITIAL_STATE = {
     popupdata: {},
     ngosPosts: [],
     ngosPostsKeys: [],
-    // key: '',
+    NGO: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -26,11 +26,15 @@ export default (state = INITIAL_STATE, action) => {
                 user: action.payload,
             });
         case ActionTypes.POPUPDATA:
-            // console.log(action.payload);
             return ({
                 ...state,
                 popupdata: action.payload,
             });
+        case ActionTypes.NGO:
+            return({
+                ...state,
+                NGO: action.payload,
+            });          
         case ActionTypes.NGOSPOSTS:
             return({
                 ...state,
