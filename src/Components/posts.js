@@ -15,7 +15,8 @@ class Posts extends Component {
   constructor() {
     super();
     this.state = {
-      like: 'active',
+      // like: false,
+      // likeAttr: 'thumbs-up',
       comment: false,
       clicked: false,
     };
@@ -24,17 +25,29 @@ class Posts extends Component {
     this.setState({ comment: false });
   };
   likePost = () => {
+    const { like } = this.state;
+    if(like){
+      this.setState({likeAttr: 'thumbs-down'});
+    }else{
+      this.setState({likeAttr: 'thumbs-up'});      
+    }
     // firebase.auth().onAuthStateChanged((user) => {
-      // if(user){
-        const { like } = this.state;
-        this.setState({ like: !like });
+    //   if(user){
         let key = this.props.postsKey;
         this.props.likePost(key);
-      // }else{
-      //   alert('Please Login First');
-      // }
+    //   }else{
+    //     alert('Please Login First');
+    //   }
     // })
   };
+  // likeAttr = () => {
+  //   const { like } = this.state;
+  //   if(like){
+  //     return 'thumbs-up';
+  //   }else{
+  //     return 'thumbs-down';
+  //   }
+  // };
   renderMessage = (requirement, rupees) => {
     let key = this.props.postsKey;
     let obj = { requirement, key, rupees };
@@ -64,6 +77,9 @@ class Posts extends Component {
     var CANCEL_INDEX = 3;
 
     let donationCircle = Math.floor((donation / rupees) * 100);
+    if(donationCircle > 100){
+      donationCircle = 100;
+    };
     return (
       <Container style={{ display: 'flex', flex: 1, height: 'auto' }}>
         {
@@ -87,13 +103,13 @@ class Posts extends Component {
               <CardItem>
                 <Left>
                   <Button onPress={this.likePost} transparent>
-                    <Icon active name="thumbs-up" />
+                    <Icon active name='thumbs-up' />
                     <Text>{likes}</Text>
                   </Button>
                 </Left>
                 <Body>
                   <Button style={{ width: '110%' }} onPress={() => this.renderMessage(requirement, rupees)} transparent>
-                    <Icon active={this.state.comment} name="chatbubbles" /><Text>{comments} COMMENTS</Text>
+                    <Icon active={this.state.comment} name="chatboxes" /><Text>{comments} COMMENTS</Text>
                   </Button>
                 </Body>
                 <Right>

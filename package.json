@@ -15,6 +15,7 @@
     "react-native-ignore-warnings": "^0.1.1",
     "react-native-percentage-circle": "^1.0.6",
     "react-native-popup-dialog": "^0.11.46",
+    "react-native-push-notification": "^3.0.2",
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-navigation": "^1.0.3",
     "react-redux": "^5.0.7",

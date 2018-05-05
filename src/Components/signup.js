@@ -84,14 +84,10 @@ class Signup extends Component {
                 <Text>
                     AccountType:
                 </Text>
-                <Body>
-                    <Text>Donator</Text>
-                    <CheckBox onPress={() => this.setState({ accountType: 'user', user: true, ngo: false })} checked={this.state.user} />
-                </Body>
-                <Body>
-                    <Text>NGO</Text>
-                    <CheckBox onPress={() => this.setState({ accountType: 'ngo', user: false, ngo: true })} checked={this.state.ngo} />
-                </Body>
+                    <Text style={{marginLeft: 10}}>Donator</Text>
+                        <CheckBox onPress={() => this.setState({ accountType: 'user', user: true, ngo: false })} checked={this.state.user} />
+                    <Text style={{marginLeft: 15}}>NGO</Text>
+                        <CheckBox onPress={() => this.setState({ accountType: 'ngo', user: false, ngo: true })} checked={this.state.ngo} />
                 </View>
                 <Text style={{fontSize: 20, color: 'red'}}>{this.props.error}</Text>                
                 <View style={styles.btn}>

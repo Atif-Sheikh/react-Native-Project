@@ -9,7 +9,7 @@ import * as firebase from 'firebase';
 
 logoutFunc = () => {
     firebase.auth().signOut().then(() => {
-        Actions.login();
+        Actions.withoutAuth();
     });
 };
 toggleButton = (text) => {

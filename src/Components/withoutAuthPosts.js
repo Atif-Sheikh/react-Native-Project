@@ -39,6 +39,9 @@ class WithoutAuthPosts extends Component {
     var DESTRUCTIVE_INDEX = 3;
     var CANCEL_INDEX = 4;
     let donationCircle = Math.floor((donation / rupees) * 100);
+    if(donationCircle > 100){
+      donationCircle = 100;
+    };
     return (
       <Container style={{ display: 'flex', flex: 1, height: 'auto' }}>
         {
@@ -59,7 +62,7 @@ class WithoutAuthPosts extends Component {
               <CardItem cardBody>
                 <Text style={{ margin: 5 }}>{requirement}, it will be cost around PKR: {rupees}/-</Text>
               </CardItem>
-              <CardItem>
+              <CardItem style={{display: 'flex', justifyContent: 'space-between'}}>
                 <Left>
                   <Button onPress={() => alert('Please Login')} transparent>
                     <Icon active name="thumbs-up" />
@@ -68,7 +71,7 @@ class WithoutAuthPosts extends Component {
                 </Left>
                 <Body>
                   <Button style={{ width: '115%' }} onPress={() => this.renderMessage(requirement, rupees)} transparent>
-                    <Icon active={this.state.comment} name="chatbubbles" /><Text>{comments} COMMENTS</Text>
+                    <Icon active={this.state.comment} name="chatboxes" /><Text>{comments} COMMENTS</Text>
                   </Button>
                 </Body>
                 <Right>

@@ -1,7 +1,7 @@
 import ActionTypes from '../constant/constant';
 import * as firebase from 'firebase';
 import { Actions } from 'react-native-router-flux'; 
-import { InteractionManager } from 'react-native';
+
 export const SignupNow = (data) => {
     return dispatch => {
         dispatch({ type: ActionTypes.SIGNUPERROR, payload: '' });                     
@@ -46,11 +46,12 @@ export const Donate = (obj) => {
             console.log(obj);
             let dbDonation;
             let donateRupees;
-            firebase.database().ref(`/posts/${obj.key}`).on('value', snap => {
-                let data = snap.val();
-                dbDonation = Number(data['donation']);
-                donateRupees = Number(obj.number);
-            })
+            firebase.database().ref(`/posts/${obj.key}`).once('value')
+                .then((snap) => {
+                    let data = snap.val();
+                    dbDonation = Number(data['donation']);
+                    donateRupees = Number(obj.number);
+                })
             firebase.database().ref(`/posts/${obj.key}`).update({donation: dbDonation+donateRupees});
         // })
     };
@@ -76,15 +77,16 @@ export const CheckLogin = () => {
     return dispatch => {
         firebase.auth().onAuthStateChanged((user) => {
             if(user){
-                firebase.database().ref(`/users/${user.uid}`).on('value', snap => {
-                    let data = snap.val();
-                    if(data['accountType'] === 'ngo'){
-                        dispatch({type: ActionTypes.NGO, payload: 'NGO'});
-                        Actions.home();
-                    }else if(data['accountType'] === 'user'){
-                        Actions.home();
-                    }
-                })
+                firebase.database().ref(`/users/${user.uid}`).once('value')
+                    .then((snap) => {
+                        let data = snap.val();
+                        if(data['accountType'] === 'ngo'){
+                            dispatch({type: ActionTypes.NGO, payload: 'NGO'});
+                            Actions.home();
+                        }else if(data['accountType'] === 'user'){
+                            Actions.home();
+                        }
+                    })
             }else{
                 Actions.withoutAuth();
             }
@@ -102,19 +104,20 @@ export const MessageKey = (obj) => {
 };
 export const getNGOs = () => {
     return dispatch => {
-        InteractionManager.runAfterInteractions(() => {
-            firebase.database().ref(`/users`).on('value', snap => {
-                let data = snap.val();
-                let ngos = [];
-                for(let key in data){
-                    if(data[key]['accountType'] === 'ngo'){
-                        ngos.push(data[key]);
+        // InteractionManager.runAfterInteractions(() => {
+            firebase.database().ref(`/users`).once('value')
+                .then((snap) => {
+                    let data = snap.val();
+                    let ngos = [];
+                    for(let key in data){
+                        if(data[key]['accountType'] === 'ngo'){
+                            ngos.push(data[key]);
+                        }
                     }
-                }
-                // console.log(ngos);
-                dispatch({ type: ActionTypes.GETNOGOS, payload: ngos});
-            })
-        });
+                    // console.log(ngos);
+                    dispatch({ type: ActionTypes.GETNOGOS, payload: ngos});
+                })
+        // });
     };
 };
 export const SendMessage = (obj) => {
@@ -125,22 +128,23 @@ export const SendMessage = (obj) => {
             var name;
             firebase.auth().onAuthStateChanged((user) => {
                 if(user){
-                    firebase.database().ref(`/users/${user.uid}`).on('value', snap => {
-                        let data = snap.val();
-                        let name = data['name'];
-                        console.log(obj, name);
-                        if(name && obj){
-                            let OldComments;
-                            firebase.database().ref(`/messages/${obj.key}`).push({ message: msg, name: name });
-                            firebase.database().ref(`/posts/${obj.key}`).on('value', snap => {
-                                let data = snap.val();
-                                OldComments = data['comments'];
-                            })
-                            firebase.database().ref(`/posts/${obj.key}`).update({comments: OldComments+1});
-                        }else{
-                            alert('something went wrong...');
-                        }
-                    })
+                    firebase.database().ref(`/users/${user.uid}`).once('value')
+                        .then((snap) => {
+                            let data = snap.val();
+                            let name = data['name'];
+                            console.log(obj, name);
+                            if(name && obj){
+                                let OldComments;
+                                firebase.database().ref(`/messages/${obj.key}`).push({ message: msg, name: name });
+                                firebase.database().ref(`/posts/${obj.key}`).on('value', snap => {
+                                    let data = snap.val();
+                                    OldComments = data['comments'];
+                                })
+                                firebase.database().ref(`/posts/${obj.key}`).update({comments: OldComments+1});
+                            }else{
+                                alert('something went wrong...');
+                            }
+                        })
                 }
             })
         // });

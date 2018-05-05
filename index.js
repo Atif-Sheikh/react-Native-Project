@@ -2,6 +2,9 @@ import { AppRegistry } from 'react-native';
 import App from './App';
 import * as firebase from 'firebase';
 
+console.disableYellowBox=true;
+
+
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyAVrEGWIMxOgTkz8xAvyyK60TklDavNX7s",

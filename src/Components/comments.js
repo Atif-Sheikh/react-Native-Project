@@ -24,8 +24,8 @@ class Message extends Component {
         FooterTab: null,
     };
     sendMessage = () => {
-        firebase.auth().onAuthStateChanged((user) => {
-            if(user){
+        // firebase.auth().onAuthStateChanged((user) => {
+        //     if(user){
                 let key = this.props.object.key;
                 console.log(key);
                 let msg = this.state.message;
@@ -37,12 +37,12 @@ class Message extends Component {
                 } else {
                     alert('Please Write somthing!');
                 }
-            }else{
-                Keyboard.dismiss();
-                this.setState({message: ''});
-                alert('Please Login First');
-            }
-        })
+            // }else{
+        //         Keyboard.dismiss();
+        //         this.setState({message: ''});
+        //         alert('Please Login First');
+        //     }
+        // })
     };
     componentWillMount() {
         this.props.GetMessages(this.props.object.key);
@@ -131,7 +131,7 @@ function mapDispatchToProp(dispatch) {
 const styles = StyleSheet.create({
     Text: {
         color: "black",
-        fontSize: 24,
+        fontSize: 20,
         margin: 5,
         marginLeft: 2,
         marginTop: 15,
