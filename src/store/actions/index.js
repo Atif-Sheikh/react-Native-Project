@@ -51,8 +51,8 @@ export const Donate = (obj) => {
                     let data = snap.val();
                     dbDonation = Number(data['donation']);
                     donateRupees = Number(obj.number);
+                    firebase.database().ref(`/posts/${obj.key}`).update({donation: dbDonation+donateRupees});
                 })
-            firebase.database().ref(`/posts/${obj.key}`).update({donation: dbDonation+donateRupees});
         // })
     };
 };
